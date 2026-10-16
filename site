@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Gamehub</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&display=swap">
+<style>
+:root{color-scheme:light;--bg:#f4f5fb;--sf:#fff;--sf2:#e9ebf7;--tx:#15172e;--mu:#5b6082;--ln:#dcdff0;--ac:#6d4aff;--hd:rgba(244,245,251,.88);--hot:#ff4d6d;
+--fd:'Bricolage Grotesque',system-ui,'Segoe UI',sans-serif;--fb:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark;--bg:#0d0f20;--sf:#161a33;--sf2:#1f2445;--tx:#eef0ff;--mu:#9ba2cc;--ln:#272d57;--ac:#8d70ff;--hd:rgba(13,15,32,.88)}}
+:root[data-theme="dark"]{color-scheme:dark;--bg:#0d0f20;--sf:#161a33;--sf2:#1f2445;--tx:#eef0ff;--mu:#9ba2cc;--ln:#272d57;--ac:#8d70ff;--hd:rgba(13,15,32,.88)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.5 var(--fb)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--hd);backdrop-filter:blur(12px)}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--ac);outline-offset:2px}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:9;background:var(--hd);backdrop-filter:blur(12px);border-bottom:1px solid var(--ln)}
+.bar{max-width:1180px;margin:auto;padding:12px 20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:10px;font:800 25px var(--fd);letter-spacing:-.02em;background:none;border:0;padding:0}
+.mark{width:36px;height:36px;border-radius:11px;background:var(--ac);display:grid;place-items:center;font-size:20px}
+.tabs{display:flex;gap:6px}
+.tab{border:0;background:transparent;padding:8px 14px;border-radius:999px;font-weight:600;color:var(--mu);display:flex;gap:8px;align-items:center}
+.tab[aria-pressed=true]{background:var(--ac);color:#fff}
+.n{display:inline-grid;place-items:center;min-width:20px;height:20px;padding:0 6px;border-radius:10px;background:var(--sf2);color:var(--tx);font-size:12px}
+.tab[aria-pressed=true] .n{background:rgba(255,255,255,.25);color:#fff}
+.search{flex:1 1 200px;max-width:340px;margin-left:auto;padding:10px 14px;border-radius:12px;border:1px solid var(--ln);background:var(--sf);color:var(--tx);font:inherit}
+main{max-width:1180px;margin:auto;padding:28px 20px 40px}
+.view{animation:fade .3s ease}
+h1{font:800 clamp(36px,6.5vw,68px)/1.02 var(--fd);letter-spacing:-.03em;margin:8px 0 14px;max-width:14ch}
+
+.sub{color:var(--mu);max-width:46ch;margin:0 0 26px;font-size:18px}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:22px}
+.chip{border:1px solid var(--ln);background:var(--sf);padding:7px 14px;border-radius:999px;font-weight:600;font-size:14px}
+.chip[aria-pressed=true]{background:var(--tx);color:var(--bg);border-color:var(--tx)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:18px}
+.intro .card{animation:pop .55s cubic-bezier(.2,.8,.2,1) both;animation-delay:calc(var(--i)*70ms)}
+.card{background:var(--sf);border:1px solid var(--ln);border-radius:20px;overflow:hidden;cursor:pointer}
+.cover{position:relative;height:132px;background:var(--c);display:grid;place-items:center;overflow:hidden}
+.cover::before{content:"";position:absolute;width:180px;height:180px;border-radius:50%;background:rgba(255,255,255,.18);right:-50px;top:-70px}
+.cover::after{content:"";position:absolute;width:90px;height:90px;border-radius:50%;background:rgba(0,0,0,.14);left:-24px;bottom:-40px}
+.em{position:relative;z-index:1;font-size:56px;transition:transform .25s}
+.card:hover .em{transform:scale(1.14) rotate(-6deg)}
+.fav{position:absolute;top:10px;right:10px;z-index:2;width:38px;height:38px;border-radius:50%;border:0;background:rgba(255,255,255,.92);display:grid;place-items:center;color:#7d83a6}
+svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linejoin:round}
+.fav.on,.btn.on{color:var(--hot)}
+.fav.on svg,.btn.on svg{fill:currentColor}
+.pop{animation:heart .35s}
+.info{padding:14px 16px 16px}
+.meta{display:flex;justify-content:space-between;align-items:center;gap:8px}
+h3{margin:0;font:800 20px var(--fd);letter-spacing:-.01em}
+.cat{white-space:nowrap;font-size:12px;font-weight:600;color:var(--mu);background:var(--sf2);padding:2px 9px;border-radius:999px}
+.info p{margin:6px 0 14px;color:var(--mu);font-size:14px}
+.play{width:100%;border:0;background:var(--ac);color:#fff;font-weight:700;padding:10px;border-radius:12px}
+.play:hover{filter:brightness(1.1)}
+.empty{grid-column:1/-1;color:var(--mu);padding:32px 0}
+.tb{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.tb h2{font:800 24px var(--fd);margin:0 auto 0 6px;letter-spacing:-.01em}
+.btn{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--ln);background:var(--sf);padding:8px 14px;border-radius:12px;font-weight:600;font-size:14px;text-decoration:none;color:var(--tx)}
+.btn svg{width:18px;height:18px}
+.stage{position:relative;height:calc(100dvh - 210px);min-height:420px;background:#000;border-radius:18px;overflow:hidden;border:1px solid var(--ln)}
+iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:#fff}
+.load{position:absolute;inset:0;display:grid;place-items:center;background:var(--sf);z-index:1}
+
+.load.off{display:none}
+.sp{width:44px;height:44px;border-radius:50%;border:4px solid var(--sf2);border-top-color:var(--ac);animation:spin .8s linear infinite}
+.hint{color:var(--mu);font-size:14px;margin:12px 4px 0}
+footer{text-align:center;color:var(--mu);font-size:13px;padding:0 20px 32px}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}}
+@keyframes pop{from{opacity:0;transform:translateY(14px) scale(.96)}}
+@keyframes heart{40%{transform:scale(1.35)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header><div class="bar">
+  <button class="logo" id="logo" aria-label="Naar de startpagina"><span class="mark">🎮</span>Gamehub</button>
+  <nav class="tabs">
+    <button class="tab" id="tAll" aria-pressed="true">Alle games</button>
+    <button class="tab" id="tFav" aria-pressed="false">Favorieten <span class="n" id="n">0</span></button>
+  </nav>
+  <input class="search" id="q" type="search" placeholder="Zoek een game" aria-label="Zoek een game">
+</div></header>
+<main>
+  <section id="homeView" class="view">
+    <h1>Alles wat je wilt spelen, op één plek.</h1>
+    <p class="sub">Kies een game, speel hem meteen hier op de site en bewaar je favorieten met het hartje.</p>
+    <div class="chips" id="chips"></div>
+    <div class="grid" id="grid"></div>
+  </section>
+  <section id="playView" class="view" hidden>
+    <div class="tb">
+      <button class="btn" id="back">Terug</button>
+      <h2 id="pt"></h2>
+      <button class="btn" id="pf" aria-pressed="false"></button>
+
+      <button class="btn" id="rl">Herlaad</button>
+      <button class="btn" id="fs">Volledig scherm</button>
+      <a class="btn" id="ext" target="_blank" rel="noopener noreferrer">Nieuw tabblad</a>
+    </div>
+    <div class="stage" id="stage">
+      <div class="load" id="ld"><div class="sp"></div></div>
+      <iframe id="fr" title="Game" sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-pointer-lock allow-downloads allow-modals allow-orientation-lock" allow="fullscreen; autoplay; gamepad; clipboard-write" allowfullscreen></iframe>
+    </div>
+    <p class="hint">Laadt het spel niet? Sommige sites blokkeren insluiten. Open het dan in een nieuw tabblad.</p>
+  </section>
+</main>
+<footer>Gamehub sluit games van externe sites in. Alle rechten blijven bij de makers.</footer>
+<script>
+const GAMES=[
+ {id:'curio',n:'Neal.fun',cat:'Puzzel',e:'🧪',c:'#6d4aff',u:'https://neal.fun',d:'Vreemde, slimme minigames en interactieve experimenten.'},
+ {id:'brain',n:'Hooda Math',cat:'Puzzel',e:'🧠',c:'#f59e0b',u:'https://hoodamath.com/#gsc.tab=0',d:'Reken- en denkspellen voor een slimme pauze.'},
+ {id:'ring',n:'Wrestle Bros',cat:'Actie',e:'🤼',c:'#e11d48',u:'https://wrestlebros.io',d:'Snelle worstelgevechten in de ring.'},
+ {id:'neon',n:'Geometry Dash',cat:'Actie',e:'⚡',c:'#0d9488',u:'https://geometry-dash.nl',d:'Spring en ontwijk obstakels op het ritme van de muziek.'},
+ {id:'crumb',n:'Cookie Clicker',cat:'Idle',e:'🍪',c:'#a0522d',u:'https://unblocked-cookie-clicker.pages.dev',d:'Klik, bak en bouw je eigen koekjesimperium.'},
+ {id:'block',n:'Mineplay 1.8.8',cat:'Sandbox',e:'⛏️',c:'#3f9b3f',u:'https://mineplay.io/play/1.8.8',d:'Bouw en overleef in een blokkenwereld, direct in je browser.'},
+ {id:'lab0',n:'Inxanity Labs',cat:'Collectie',e:'🔬',c:'#2563eb',u:'https://www.inxanitylabs.com',d:'Een mix van experimentele browsergames.'},
+ {id:'vault',n:'Crazy Games Unblocked',cat:'Collectie',e:'🕹️',c:'#c026d3',u:'https://crazygamesunblocked.co.uk',d:'Een hele kluis vol verschillende browsergames.'}
+];
+const HEART='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-4.4-9.5-9.2C.9 8.6 2.6 5 6 5c2 0 3.4 1 6 3.4C14.6 6 16 5 18 5c3.400 0 5.100 3.600 3.500 6.800C19 16.600 12 21 12 21z"/></svg>';
+const $=s=>document.querySelector(s);
+let favs=[];
+try{favs=JSON.parse(localStorage.getItem('gamehub:favs'))||[]}catch(e){}
+if(!Array.isArray(favs))favs=[];
+const store=()=>{try{localStorage.setItem('gamehub:favs',JSON.stringify(favs))}catch(e){}};
+const S={cat:'Alle',q:'',fav:false,cur:null,intro:true};
+const cats=['Alle',...new Set(GAMES.map(g=>g.cat))];
+
+
+function card(g,i){
+  const on=favs.includes(g.id);
+  return `<article class="card" data-id="${g.id}" style="--i:${i}"><div class="cover" style="--c:${g.c}"><span class="em">${g.e}</span><button class="fav${on?' on':''}" data-fav="${g.id}" aria-pressed="${on}" aria-label="Favoriet: ${g.n}">${HEART}</button></div><div class="info"><div class="meta"><h3>${g.n}</h3><span class="cat">${g.cat}</span></div><p>${g.d}</p><button class="play" data-play="${g.id}">Speel nu</button></div></article>`;
+}
+function render(){
+  const L=GAMES.filter(g=>(!S.fav||favs.includes(g.id))&&(S.cat==='Alle'||g.cat===S.cat)&&(g.n+' '+g.d+' '+g.cat).toLowerCase().includes(S.q));
+  $('#grid').className='grid'+(S.intro?' intro':'');S.intro=false;
+  $('#grid').innerHTML=L.length?L.map(card).join(''):`<p class="empty">${S.fav&&!favs.length?'Nog geen favorieten. Tik op het hartje bij een game om hem hier te bewaren.':'Geen games gevonden. Probeer een andere zoekterm of categorie.'}</p>`;
+  document.querySelectorAll('.chip').forEach(c=>c.setAttribute('aria-pressed',c.dataset.cat===S.cat));
+  $('#tAll').setAttribute('aria-pressed',!S.fav);$('#tFav').setAttribute('aria-pressed',S.fav);
+  $('#n').textContent=favs.length;
+}
+function sync(){
+  document.querySelectorAll('[data-fav]').forEach(b=>{const on=favs.includes(b.dataset.fav);b.classList.toggle('on',on);b.setAttribute('aria-pressed',on)});
+  $('#n').textContent=favs.length;
+  if(S.cur){const on=favs.includes(S.cur.id);$('#pf').classList.toggle('on',on);$('#pf').setAttribute('aria-pressed',on);$('#pl').textContent=on?'Bewaard':'Favoriet'}
+}
+function toggle(id,btn){
+  favs=favs.includes(id)?favs.filter(x=>x!==id):[...favs,id];store();
+  if(btn){btn.classList.remove('pop');void btn.offsetWidth;btn.classList.add('pop')}
+  sync();
+  if(S.fav&&!S.cur)setTimeout(render,220);
+}
+function play(id){
+  const g=GAMES.find(x=>x.id===id);if(!g)return;
+  S.cur=g;$('#homeView').hidden=true;$('#playView').hidden=false;
+  $('#pt').textContent=g.n;$('#ext').href=g.u;
+  $('#ld').classList.remove('off');$('#fr').src=g.u;sync();scrollTo(0,0);
+}
+function back(){
+  S.cur=null;$('#fr').src='about:blank';
+  $('#playView').hidden=true;$('#homeView').hidden=false;render();
+
+}
+function go(fav){S.fav=fav;if(S.cur)back();else render()}
+
+$('#pf').innerHTML=HEART+'<span id="pl">Favoriet</span>';
+$('#chips').innerHTML=cats.map(c=>`<button class="chip" data-cat="${c}">${c}</button>`).join('');
+$('#grid').addEventListener('click',e=>{
+  const f=e.target.closest('[data-fav]');if(f){toggle(f.dataset.fav,f);return}
+  const c=e.target.closest('.card');if(c)play(c.dataset.id);
+});
+$('#chips').addEventListener('click',e=>{const c=e.target.closest('[data-cat]');if(c){S.cat=c.dataset.cat;if(S.cur)back();else render()}});
+$('#q').addEventListener('input',e=>{S.q=e.target.value.trim().toLowerCase();if(S.cur)back();else render()});
+$('#tAll').onclick=()=>go(false);
+$('#tFav').onclick=()=>go(true);
+$('#logo').onclick=()=>{S.cat='Alle';S.q='';$('#q').value='';go(false)};
+$('#back').onclick=back;
+$('#pf').onclick=e=>toggle(S.cur.id,e.currentTarget);
+$('#rl').onclick=()=>{const f=$('#fr');$('#ld').classList.remove('off');f.src='about:blank';setTimeout(()=>{if(S.cur)f.src=S.cur.u},60)};
+$('#fs').onclick=()=>{const s=$('#stage');document.fullscreenElement?document.exitFullscreen():s.requestFullscreen&&s.requestFullscreen()};
+$('#fr').addEventListener('load',()=>{if(S.cur&&$('#fr').src!=='about:blank')$('#ld').classList.add('off')});
+addEventListener('keydown',e=>{if(e.key==='Escape'&&S.cur&&!document.fullscreenElement)back()});
+render();
+</script>
+</body>
+</html>
